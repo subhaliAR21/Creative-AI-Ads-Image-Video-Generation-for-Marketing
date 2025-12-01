@@ -1,0 +1,389 @@
+// .......................................................................................................................
+
+
+// import React from 'react';
+
+// function ResultsPage({ data, reset }) {
+//   // Destructuring assumes 'images' is an array of objects: 
+//   // [{ image_prompt, headline, body, image_url }, ...]
+//   const { images, videoUrl } = data;
+
+//   return (
+//     <div style={{ marginTop: '2rem' }}>
+//       <h2 style={{ color: '#1f2937', marginBottom: '1rem', textAlign: 'center' }}>
+//         ✅ Generation Complete! Preview Variations
+//       </h2>
+//       <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '2rem' }}>
+//         These variations are ready for A/B Testing and deployment.
+//       </p>
+
+//       {/* Image Variations Section */}
+//       <div
+//         style={{
+//           display: 'grid',
+//           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+//           gap: '30px',
+//           marginBottom: '2rem',
+//         }}
+//       >
+//         {images &&
+//           images.map((ad, index) => (
+//             <div
+//               key={index}
+//               style={{
+//                 background: '#ffffff',
+//                 padding: '1.5rem',
+//                 borderRadius: '12px',
+//                 boxShadow: '0 6px 20px rgba(0,0,0,0.08)',
+//                 textAlign: 'center',
+//                 border: '1px solid #e5e7eb',
+//                 display: 'flex',
+//                 flexDirection: 'column',
+//                 justifyContent: 'space-between',
+//               }}
+//             >
+//               <div>
+//                 <h4 style={{ color: '#1f2937', marginBottom: '10px' }}>
+//                   Image Variation #{index + 1}
+//                 </h4>
+//                 <p
+//                   style={{
+//                     color: '#4f46e5',
+//                     fontWeight: '700',
+//                     marginBottom: '10px',
+//                     fontSize: '0.9rem',
+//                   }}
+//                 >
+//                   A/B Test ID: IMG-VAR-{index + 1}
+//                 </p>
+                
+//                 {/* --- DISPLAY GENERATED COPY & PROMPT --- */}
+//                 <div style={{ padding: '5px 0 15px', borderBottom: '1px solid #eee' }}>
+//                     <p style={{ fontWeight: '800', color: '#111827', fontSize: '1.1rem', margin: '0 0 5px 0' }}>{ad.headline}</p>
+//                     <p style={{ color: '#6b7280', fontSize: '0.9rem', margin: '0' }}>{ad.body}</p>
+//                     <p style={{ color: '#9ca3af', fontSize: '0.75rem', marginTop: '10px', fontStyle: 'italic' }}>
+//                         (AI Image Prompt: {ad.image_prompt})
+//                     </p>
+//                 </div>
+//                 {/* --- END GENERATED COPY & PROMPT --- */}
+
+//                 <img
+//                   src={ad.image_url} // Access the image_url from the object
+//                   alt={`Ad Variation ${index + 1}`}
+//                   style={{ width: '100%', height: 'auto', borderRadius: '8px', objectFit: 'cover', marginTop: '15px' }}
+//                 />
+//               </div>
+
+//               {/* Download Button remains the same, but uses ad.image_url */}
+//               <div style={{ marginTop: '15px' }}>
+//                 <a
+//                   href={ad.image_url}
+//                   download={`ad-variation-${index + 1}.png`}
+//                   target="_blank"
+//                   rel="noopener noreferrer"
+//                   style={{
+//                     textDecoration: 'none',
+//                     background: '#4f46e5',
+//                     color: '#fff',
+//                     padding: '10px 18px',
+//                     borderRadius: '8px',
+//                     fontSize: '15px',
+//                     fontWeight: '600',
+//                     display: 'inline-block',
+//                     transition: 'background 0.3s',
+//                   }}
+//                 >
+//                   ⬇ Download Image
+//                 </a>
+//               </div>
+//             </div>
+//           ))}
+//       </div>
+
+//       {/* Video Ad Section - Corrected Download Link */}
+//       {videoUrl && (
+//         <div
+//           style={{
+//             // ... (Styles remain the same)
+//           }}
+//         >
+//           <h3 style={{ marginBottom: '1.5rem', color: '#374151' }}>🎬 Generated Video Ad</h3>
+//           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+//             <video width="100%" height="auto" controls style={{ borderRadius: '10px' }}>
+//               <source src={videoUrl} type="video/mp4" />
+//               Your browser does not support the video tag.
+//             </video>
+//           </div>
+//           <div style={{ marginTop: '20px' }}>
+//             <a
+//               href={videoUrl}
+//               download="ad-video.mp4"
+//               target="_blank" // Added target for better cross-browser download handling
+//               rel="noopener noreferrer"
+//               style={{
+//                 textDecoration: 'none',
+//                 background: '#4f46e5',
+//                 color: '#fff',
+//                 padding: '12px 20px',
+//                 borderRadius: '8px',
+//                 fontSize: '16px',
+//                 fontWeight: '600',
+//                 display: 'inline-block',
+//                 transition: 'background 0.3s',
+//               }}
+//             >
+//               ⬇ Download Video
+//             </a>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Analytics & New Ads Button */}
+//       {/* ... (This section remains unchanged) ... */}
+//       <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+//         <button
+//           onClick={() => alert("Simulating redirect to Analytics Dashboard...")}
+//           style={{
+//             marginRight: '20px',
+//             padding: '12px 20px',
+//             fontSize: '16px',
+//             fontWeight: '600',
+//             borderRadius: '10px',
+//             border: '2px solid #34d399',
+//             background: '#d1fae5',
+//             color: '#065f46',
+//             cursor: 'pointer',
+//             transition: 'all 0.3s ease',
+//           }}
+//         >
+//           📊 View A/B Testing & Analytics
+//         </button>
+//         <button
+//           onClick={reset}
+//           style={{
+//             padding: '12px 20px',
+//             fontSize: '16px',
+//             fontWeight: '600',
+//             borderRadius: '10px',
+//             border: 'none',
+//             background: '#ef4444',
+//             color: '#fff',
+//             cursor: 'pointer',
+//             transition: 'all 0.3s ease',
+//           }}
+//         >
+//           🔄 Generate New Ads
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default ResultsPage;
+
+// ........................................................................................................................
+
+import React from 'react';
+
+// --- 1. Robust Client-Side Download Function ---
+// This function fetches the file as a Blob and forces the browser to download it,
+// which is essential for working around cross-origin (CORS) security issues.
+const handleDownload = async (url, filename) => {
+  if (!url || url.includes('Placeholder+Image')) {
+    alert("Cannot download: The asset URL is a generic placeholder or missing.");
+    return;
+  }
+  
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const blob = await response.blob();
+    
+    // Create an invisible link element to force download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename || 'generated_ad_asset.bin'; 
+    
+    // Append to the document, click it, and clean up
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  } catch (error) {
+    console.error("Error downloading asset:", error);
+    alert("Failed to download asset. Check the console for a detailed network or CORS error.");
+  }
+};
+
+
+function ResultsPage({ data, reset }) {
+  const { images, videoUrl } = data;
+  
+  // A consistent placeholder image URL
+  const PLACEHOLDER_IMG_URL = 'https://via.placeholder.com/300x200?text=Placeholder+Image';
+
+  const handleNewAds = () => {
+    reset(); 
+    // If using react-router, you might also need navigate('/');
+  };
+
+  if (!images || images.length === 0) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h2>No Results Found 😔</h2>
+        <p>Please go back and generate ad concepts again.</p>
+        <button onClick={handleNewAds} style={{ padding: '10px 20px', background: '#4f46e5', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '15px' }}>
+          Start New Generation
+        </button>
+      </div>
+    );
+  }
+  
+
+  return (
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+      <header style={{ textAlign: 'center', marginBottom: '40px', borderBottom: '2px solid #e5e7eb', paddingBottom: '20px' }}>
+        <h1 style={{ color: '#1f2937', fontSize: '2.5rem' }}>🎯 Ad Generation Results</h1>
+        <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>Concepts generated by **Google Gemini**</p>
+      </header>
+      
+      {/* --- Image Ad Variations Section --- */}
+      <h2 style={{ color: '#374151', marginBottom: '20px', borderLeft: '4px solid #4f46e5', paddingLeft: '15px' }}>🖼️ Image Ad Variations</h2>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '30px',
+          marginBottom: '40px',
+        }}
+      >
+        {images.map((ad, index) => (
+          <div
+            key={index}
+            style={{
+              border: '1px solid #d1d5db',
+              borderRadius: '12px',
+              padding: '20px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06)',
+              backgroundColor: '#fff',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <h3 style={{ color: '#111827', marginBottom: '10px', fontSize: '1.5rem' }}>Variation #{index + 1}</h3>
+              <p style={{ color: '#9ca3af', fontSize: '0.85rem', marginBottom: '15px' }}>A/B Test ID: IMG-VAR-{index + 1}</p>
+
+              {/* --- DISPLAY GENERATED COPY & PROMPT --- */}
+              <div style={{ padding: '5px 0 15px', borderBottom: '1px solid #eee' }}>
+                  <p style={{ fontWeight: '800', color: '#111827', fontSize: '1.1rem', margin: '0 0 5px 0' }}>{ad.headline}</p>
+                  <p style={{ color: '#6b7280', fontSize: '0.9rem', margin: '0' }}>{ad.body}</p>
+                  
+                  {/* Image Prompt from Gemini */}
+                  <p style={{ color: '#9ca3af', fontSize: '0.75rem', marginTop: '10px', fontStyle: 'italic', wordBreak: 'break-word' }}>
+                      Prompt: {ad.image_prompt}
+                  </p>
+              </div>
+              {/* --- END GENERATED COPY & PROMPT --- */}
+
+              {/* Image Display - Now uses ad.image_url to load the working placeholder */}
+              <img
+                src={ad.image_url || PLACEHOLDER_IMG_URL} 
+                alt={`Ad Variation ${index + 1}`}
+                style={{ width: '100%', height: 'auto', borderRadius: '8px', objectFit: 'cover', marginTop: '15px', minHeight: '150px' }}
+                // Fallback on error (this handles cases where the picsum link might fail)
+                onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER_IMG_URL; }} 
+              />
+            </div>
+
+            {/* --- Download Button --- */}
+            <div style={{ marginTop: '20px' }}>
+              <button
+                onClick={() => handleDownload(ad.image_url || PLACEHOLDER_IMG_URL, `ad-variation-${index + 1}.jpg`)}
+                style={{
+                  width: '100%',
+                  background: '#4f46e5',
+                  color: '#fff',
+                  padding: '10px 18px',
+                  borderRadius: '8px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background 0.3s',
+                  border: 'none',
+                }}
+              >
+                ⬇ Download Image
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* --- Video Ad Section --- */}
+      <h2 style={{ color: '#374151', marginBottom: '20px', borderLeft: '4px solid #4f46e5', paddingLeft: '15px' }}>📹 Video Ad Concept</h2>
+      <div style={{ border: '1px solid #d1d5db', borderRadius: '12px', padding: '20px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff' }}>
+        
+        <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '20px' }}>
+            **Video Concept:** (The video's final content relies on the detail of the generated prompt.)
+        </p>
+        
+        {videoUrl && (
+          <>
+            <video width="100%" controls style={{ borderRadius: '8px', marginBottom: '20px' }}>
+              <source src={videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                {/* Download Button for Video */}
+                <button
+                onClick={() => handleDownload(videoUrl, 'ad-video.mp4')}
+                style={{
+                    background: '#4f46e5',
+                    color: '#fff',
+                    padding: '12px 20px',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'background 0.3s',
+                    border: 'none',
+                    marginRight: '15px'
+                }}
+                >
+                ⬇ Download Video
+                </button>
+                <p style={{color: '#9ca3af', fontSize: '0.75rem', marginTop: '10px'}}>*Video is currently a placeholder URL from the server.*</p>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* --- New Ads Button --- */}
+      <div style={{ textAlign: 'center', marginTop: '40px' }}>
+        <button
+          onClick={handleNewAds}
+          style={{
+            background: '#10b981',
+            color: '#fff',
+            padding: '12px 30px',
+            borderRadius: '8px',
+            fontSize: '16px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            transition: 'background 0.3s',
+            border: 'none',
+          }}
+        >
+          🚀 Generate New Ads
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default ResultsPage;
