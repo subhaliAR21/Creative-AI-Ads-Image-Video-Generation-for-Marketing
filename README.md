@@ -106,3 +106,5 @@ To implement live video generation, the following is required:
 
 * Integration with a paid, specialized API (e.g., Runway, Pika, or Google's Vertex AI/Veo).
 * Handling of long-running requests and potential webhooks for video processing.
+
+#### Demo Video Drive Link: https://drive.google.com/drive/folders/1HCmOX47gP2RmuXJ0OBUC2l3VRtA5_g4R?usp=sharing
