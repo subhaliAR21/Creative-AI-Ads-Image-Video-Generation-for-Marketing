@@ -1,11 +1,7 @@
-
-// ........................................................................................................................
-
 import React from 'react';
 
 // --- 1. Robust Client-Side Download Function ---
-// This function fetches the file as a Blob and forces the browser to download it,
-// which is essential for working around cross-origin (CORS) security issues.
+// Handles external cross-origin images gracefully by trying a Blob fallback or opening in a new tab if blocked.
 const handleDownload = async (url, filename) => {
   if (!url || url.includes('Placeholder+Image')) {
     alert("Cannot download: The asset URL is a generic placeholder or missing.");
@@ -13,7 +9,7 @@ const handleDownload = async (url, filename) => {
   }
   
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, { mode: 'cors' });
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -31,8 +27,12 @@ const handleDownload = async (url, filename) => {
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
   } catch (error) {
-    console.error("Error downloading asset:", error);
-    alert("Failed to download asset. Check the console for a detailed network or CORS error.");
+    console.warn("Direct blob download failed due to CORS restrictions. Falling back to secure window open.", error);
+    // Secure Fallback: Open in a new tab if cloud-storage provider blocks hot-linking
+    const newWindow = window.open(url, '_blank');
+    if (!newWindow) {
+      alert("Popup blocked! Please allow popups to save your generated ad asset variations.");
+    }
   }
 };
 
@@ -45,7 +45,6 @@ function ResultsPage({ data, reset }) {
 
   const handleNewAds = () => {
     reset(); 
-    // If using react-router, you might also need navigate('/');
   };
 
   if (!images || images.length === 0) {
@@ -108,12 +107,11 @@ function ResultsPage({ data, reset }) {
               </div>
               {/* --- END GENERATED COPY & PROMPT --- */}
 
-              {/* Image Display - Now uses ad.image_url to load the working placeholder */}
+              {/* Image Display */}
               <img
                 src={ad.image_url || PLACEHOLDER_IMG_URL} 
                 alt={`Ad Variation ${index + 1}`}
                 style={{ width: '100%', height: 'auto', borderRadius: '8px', objectFit: 'cover', marginTop: '15px', minHeight: '150px' }}
-                // Fallback on error (this handles cases where the picsum link might fail)
                 onError={(e) => { e.target.onerror = null; e.target.src = PLACEHOLDER_IMG_URL; }} 
               />
             </div>
