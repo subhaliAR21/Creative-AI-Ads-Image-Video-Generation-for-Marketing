@@ -2,7 +2,6 @@
 // Model : Stable Image Core,  API Version : REST API v2beta
 
 import express from 'express';
-import cors from 'cors';
 import bodyParser from 'body-parser';
 import { GoogleGenAI } from '@google/genai'; 
 import 'dotenv/config'; 
@@ -29,12 +28,28 @@ const STABILITY_API_KEY = process.env.STABILITY_API_KEY;
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors({ 
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], 
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204
-})); 
+// --- BULLETPROOF CUSTOM CORS MIDDLEWARE (REPLACES STANDARD CORS PACKAGE) ---
+// This guarantees that preflight OPTIONS requests are immediately resolved and allowed.
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  // Dynamically allow the requesting origin (perfect for localhost and any deployed Vercel URL)
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+  // Intercept OPTIONS method (Preflight safety check sent by the browser)
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204); // Instant clean response to the browser's safety check
+  }
+  next();
+});
 
 app.use(bodyParser.json());
 
@@ -147,10 +162,10 @@ app.post('/api/generate-images', async (req, res) => {
         }
     });
 
-    // --- 2. Robust JSON Parsing ---
+    // --- 2. Robust JSON Parsing (Fixed Single-Line Safe Regex Cleaner) ---
     let generatedAds = [];
     try {
-        const cleanedText = geminiResponse.text.trim().replace(/^```json\s*|(?:\r?\n|\r)```$/g, '');
+        const cleanedText = geminiResponse.text.trim().replace(/^```json\s*|```$/g, '');
         generatedAds = JSON.parse(cleanedText);
         
         if (!Array.isArray(generatedAds) || generatedAds.length === 0) {
