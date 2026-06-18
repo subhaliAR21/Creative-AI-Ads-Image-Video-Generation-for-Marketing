@@ -150,8 +150,7 @@ app.post('/api/generate-images', async (req, res) => {
     // --- 2. Robust JSON Parsing ---
     let generatedAds = [];
     try {
-        const cleanedText = geminiResponse.text.trim().replace(/^```json\s*|(?:\r?\n|\r)
-```$/g, '');
+        const cleanedText = geminiResponse.text.trim().replace(/^```json\s*|(?:\r?\n|\r)```$/g, '');
         generatedAds = JSON.parse(cleanedText);
         
         if (!Array.isArray(generatedAds) || generatedAds.length === 0) {
